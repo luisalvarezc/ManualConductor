@@ -1,0 +1,340 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Manual del Conductor CR - Guía de Estudio</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+    <script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap');
+        body { font-family: 'Inter', sans-serif; }
+        .line-clamp-2 {
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;  
+            overflow: hidden;
+        }
+    </style>
+</head>
+<body class="bg-slate-50 text-slate-900">
+    <div id="root"></div>
+
+    <script type="text/babel">
+        const { useState, useEffect, useMemo } = React;
+
+        // --- DATA ---
+        const chapters = [
+            { id: 1, title: "Aspectos generales del tránsito", description: "Historia, conceptos básicos y la trilogía vial." },
+            { id: 2, title: "Legislación de tránsito", description: "Leyes, sanciones, licencias y puntos." },
+            { id: 3, title: "Factor vía y su entorno", description: "Tipos de vías, infraestructura y señalamiento." },
+            { id: 4, title: "Factor vehículo", description: "Sistemas del vehículo, mantenimiento y seguridad." },
+            { id: 5, title: "Factor humano", description: "Condiciones físicas, mentales y conducción segura." },
+            { id: 6, title: "Normas de circulación", description: "Prioridades de paso, giros y adelantamientos." },
+            { id: 7, title: "Rotondas", description: "Reglas específicas para circular en rotondas." },
+            { id: 8, title: "Conductor y contaminación", description: "Impacto ambiental y normativa vigente." },
+            { id: 9, title: "Conducción eficiente", description: "Ahorro de combustible y técnicas de eco-conducción." },
+            { id: 10, title: "Conducción de motocicleta", description: "Reglas específicas para motociclistas." },
+        ];
+
+        const questions = [
+            { id: "c1-q1", question: "¿En qué año circuló el primer vehículo en San José?", options: ["1900", "1912", "1920", "1945"], correctAnswer: 1, chapter: 1, explanation: "El primer vehículo que circuló en San José lo hizo en 1912." },
+            { id: "c1-q2", question: "¿En qué año se publicó el primer Código de la Circulación en Costa Rica?", options: ["1912", "1920", "1976", "2012"], correctAnswer: 1, chapter: 1, explanation: "El primer Código de la Circulación se publicó en 1920." },
+            { id: "c1-q3", question: "¿Cuáles son los tres factores que componen el tránsito (Trilogía Vial)?", options: ["El humano, el vehicular y la vía con su entorno", "El conductor, el pasajero y el peatón", "La carretera, las señales y el vehículo", "La ley, la policía y el conductor"], correctAnswer: 0, chapter: 1, explanation: "La trilogía vial está compuesta por el factor humano, el factor vehicular y el factor vía y su entorno." },
+            { id: "c1-q4", question: "¿Cuál es el objetivo primordial de la seguridad vial?", options: ["Llegar rápido al destino", "Ahorrar combustible", "Prevenir accidentes de tránsito", "Mejorar la infraestructura"], correctAnswer: 2, chapter: 1, explanation: "El objetivo primordial de la seguridad vial es prevenir accidentes de tránsito." },
+            { id: "c1-q5", question: "¿Qué es el transporte?", options: ["El sistema integrado por humanos y vías", "La acción de trasladar una persona o cosa de un lugar a otro", "El movimiento de vehículos", "Un servicio público únicamente"], correctAnswer: 1, chapter: 1, explanation: "El transporte se define como la acción de trasladar una persona o cosa de un lugar a otro." },
+            { id: "c2-q1", question: "¿Cuál es el número de la Ley de Tránsito vigente en Costa Rica?", options: ["Ley 5930", "Ley 7331", "Ley 9078", "Ley 7600"], correctAnswer: 2, chapter: 2, explanation: "La ley vigente es la Ley de Tránsito por Vías Públicas Terrestres y Seguridad Vial número 9078." },
+            { id: "c2-q2", question: "¿Qué porcentaje de lo recaudado por multas de tránsito se destina al COSEVI?", options: ["23%", "5%", "69%", "14%"], correctAnswer: 2, chapter: 2, explanation: "El 69% se destina al COSEVI para programas de seguridad y educación vial." },
+            { id: "c2-q3", question: "¿Cuántos puntos acumulados resultan en la suspensión de la licencia para un conductor novato por primera vez?", options: ["4 puntos", "6 puntos", "12 puntos", "8 puntos"], correctAnswer: 1, chapter: 2, explanation: "Aquel conductor que en categoría novato acumule 6 puntos en su licencia recibe una suspensión por un año la primera vez." },
+            { id: "c2-q4", question: "Si un conductor tiene de 5 a 8 puntos acumulados, ¿por cuánto tiempo se le renovará la licencia?", options: ["6 años", "4 años", "3 años", "2 años"], correctAnswer: 1, chapter: 2, explanation: "De 5 a 8 puntos, la vigencia de la licencia es de 4 años." },
+            { id: "c2-q5", question: "¿A qué edad mínima se puede optar por una licencia tipo A-1?", options: ["18 años", "16 años", "21 años", "15 años"], correctAnswer: 1, chapter: 2, explanation: "Se autoriza a los mayores de 16 años a optar por la licencia tipo A-1, con autorización escrita de los padres." },
+            { id: "c2-q6", question: "¿A partir de qué concentración de alcohol en sangre se considera infracción para un conductor novato?", options: ["0,50 g", "0,20 g", "0,75 g", "0,10 g"], correctAnswer: 1, chapter: 2, explanation: "Para conductores novatos y profesionales, la infracción inicia a partir de 0,20 g de alcohol por litro de sangre." },
+            { id: "c2-q11", question: "¿Cuál es la vigencia de la licencia para un conductor que tiene de 0 a 4 puntos acumulados?", options: ["3 años", "4 años", "6 años", "10 años"], correctAnswer: 2, chapter: 2, explanation: "Si se tienen de 0 a 4 puntos, la licencia se renueva por 6 años." },
+            { id: "c3-q1", question: "¿Cuáles son las secciones de una vía urbana?", options: ["Calzada y espaldón", "Acera, calzada, caño y borde de acera", "Calzada, cuneta y espaldón", "Carriles y señales"], correctAnswer: 1, chapter: 3, explanation: "La vía urbana consta de acera, calzada, caño y borde de acera o bordillo." },
+            { id: "c3-q2", question: "¿Qué indica una línea amarilla continua en el centro de la carretera?", options: ["Se permite el rebase", "No se permite el rebase", "Carril exclusivo para buses", "Zona de estacionamiento"], correctAnswer: 1, chapter: 3, explanation: "La línea amarilla continua indica que no se permite el adelantamiento (rebase)." },
+            { id: "c3-q3", question: "¿Qué significan las señales de color naranja?", options: ["Información turística", "Prevención de obras en la vía", "Reglamentación", "Servicios"], correctAnswer: 1, chapter: 3, explanation: "Las señales de color naranja se utilizan para la prevención de obras que se realizan en la vía." },
+            { id: "c3-q4", question: "¿Cuál es la función de las señales de reglamentación?", options: ["Advertir sobre peligros en la vía", "Indicar obligaciones, prohibiciones o normativas de cumplimiento necesario", "Orientar al conductor sobre su recorrido", "Indicar sitios de interés turístico"], correctAnswer: 1, chapter: 3, explanation: "Las señales de reglamentación indican al conductor o peatón las obligaciones, prohibiciones o normativas que debe cumplir necesariamente." },
+            { id: "c3-q5", question: "¿Qué es el peralte o sobreelevación?", options: ["Un bache en la carretera", "Una elevación mayor en uno de los extremos de la calzada en una curva para contrarrestar la fuerza centrífuga", "El borde de la acera", "Una señal de tránsito"], correctAnswer: 1, chapter: 3, explanation: "El peralte es la inclinación transversal de la vía en las curvas para ayudar al vehículo a mantenerse en su carril." },
+            { id: "c3-q6", question: "¿Qué indica la luz amarilla del semáforo?", options: ["Acelerar para pasar antes de que cambie", "Indica el cambio hacia la luz roja y que el conductor debe desacelerar para detenerse", "Que se puede pasar con precaución", "Que el semáforo está fallando"], correctAnswer: 1, chapter: 3, explanation: "La luz amarilla avisa el cambio hacia la roja. Lo correcto es detenerse frente a la línea de parada si aún no se ha ingresado a la intersección." },
+            { id: "c3-q7", question: "¿Qué indica una línea de borde?", options: ["El centro de la carretera", "Separa la calzada del espaldón o caño y sirve de guía al conductor", "Zona de no estacionar", "Carril exclusivo para giros"], correctAnswer: 1, chapter: 3, explanation: "La línea de borde separa la calzada del espaldón y ayuda especialmente en condiciones de neblina." },
+            { id: "c3-q8", question: "¿Qué significan las señales de color verde?", options: ["Prevención", "Reglamentación", "Información de destino y distancia", "Obras en la vía"], correctAnswer: 2, chapter: 3, explanation: "Las señales verdes indican destinos, direcciones y distancias." },
+            { id: "c4-q1", question: "¿Cuál es la función del sistema de lubricación?", options: ["Enfriar el motor", "Evitar el roce entre las piezas del motor", "Generar electricidad", "Filtrar el aire"], correctAnswer: 1, chapter: 4, explanation: "El sistema de lubricación sirve para evitar el roce entre las piezas del motor." },
+            { id: "c4-q2", question: "¿Qué sistema tiene como función principal separar el sistema de transmisión del motor?", options: ["Frenos", "Dirección", "Embrague (clutch)", "Suspensión"], correctAnswer: 2, chapter: 4, explanation: "El sistema de embrague separa el sistema de transmisión del motor para realizar el cambio de marcha." },
+            { id: "c4-q3", question: "¿Cuál es el grosor mínimo legal del taco de goma en el testigo de desgaste de una llanta?", options: ["1,0 mm", "1,6 mm", "2,0 mm", "0,5 mm"], correctAnswer: 1, chapter: 4, explanation: "El testigo de desgaste es un taco de goma de 1,6 mm de grosor." },
+            { id: "c4-q4", question: "¿Cuál es el lugar más adecuado para llevar el extintor en el vehículo?", options: ["En la cajuela", "Debajo del asiento del conductor", "Debajo del asiento del pasajero delantero", "En el asiento de atrás"], correctAnswer: 2, chapter: 4, explanation: "El sitio más adecuado es debajo del asiento del pasajero delantero, donde esté al alcance y sea fácil de sacar." },
+            { id: "c4-q5", question: "¿Qué componente del sistema eléctrico genera corriente y recarga la batería?", options: ["El motor de arranque", "El alternador", "Las bujías", "El distribuidor"], correctAnswer: 1, chapter: 4, explanation: "El alternador es la parte principal del sistema de carga, ya que genera corriente y recarga la batería." },
+            { id: "c4-q6", question: "¿Cuál es la profundidad mínima legal de la ranura de las llantas?", options: ["Hasta que se vea el alambre", "Hasta que alcance el testigo de la llanta (1.6 mm)", "2.5 mm", "5.0 mm"], correctAnswer: 1, chapter: 4, explanation: "Es prohibido circular con llantas cuya profundidad de la ranura alcance el testigo de la llanta (1.6 mm)." },
+            { id: "c4-q7", question: "¿Qué componente del sistema de lubricación permite medir el nivel de aceite?", options: ["El filtro", "La bomba", "La varilla medidora", "El cárter"], correctAnswer: 2, chapter: 4, explanation: "La varilla medidora es el componente diseñado para verificar el nivel de aceite en el motor." },
+            { id: "c4-q8", question: "¿Qué sistema evacúa los gases quemados que resultan del proceso de combustión?", options: ["Sistema de alimentación", "Sistema de escape", "Sistema eléctrico", "Sistema de enfriamiento"], correctAnswer: 1, chapter: 4, explanation: "El sistema de escape evacúa los gases quemados del motor." },
+            { id: "c5-q1", question: "¿Cuál es el tiempo de reacción promedio de un conductor?", options: ["0,5 segundos", "1,5 segundos", "2,5 segundos", "3,0 segundos"], correctAnswer: 1, chapter: 5, explanation: "El tiempo de reacción del conductor se estima en 1,5 segundos." },
+            { id: "c5-q2", question: "¿Qué significa manejar a la defensiva?", options: ["Manejar rápido para evitar peligros", "Esperar todo, imaginar todo y suponer todo", "Usar siempre la bocina", "No dejar que nadie nos adelante"], correctAnswer: 1, chapter: 5, explanation: "Manejar a la defensiva significa: ESPERAR TODO, IMAGINAR TODO y SUPONER TODO." },
+            { id: "c5-q3", question: "¿Qué efecto produce el alcohol en la primera etapa?", options: ["Sueño profundo", "Estado de desinhibición y aparente estimulación", "Mejora los reflejos", "Aumenta la visión"], correctAnswer: 1, chapter: 5, explanation: "En una primera etapa, el alcohol produce un estado de desinhibición que se traduce en una aparente estimulación." },
+            { id: "c5-q4", question: "¿En qué horario es obligatorio encender las luces del vehículo?", options: ["De 7:00 p.m. a 5:00 a.m.", "De 6:00 p.m. a 6:00 a.m.", "Solo cuando está muy oscuro", "De 5:00 p.m. a 7:00 a.m."], correctAnswer: 1, chapter: 5, explanation: "El artículo 103 obliga a encender las luces de las 6:00 p.m. hasta las 6:00 a.m." },
+            { id: "c6-q1", question: "¿Cuál es la regla de seguimiento para vehículos livianos?", options: ["Regla de los 5 segundos", "Regla de los dos segundos", "Regla del intervalo", "Regla de la mano derecha"], correctAnswer: 1, chapter: 6, explanation: "Para vehículos livianos se aplica la regla de los dos segundos." },
+            { id: "c6-q2", question: "¿Qué indica la 'Ley de la mano derecha'?", options: ["Que siempre se debe girar a la derecha", "Que el conductor que sale por el lado derecho tiene prioridad en intersecciones no reguladas", "Que se debe usar la mano derecha para hacer señales", "Que el carril derecho es para buses"], correctAnswer: 1, chapter: 6, explanation: "En intersecciones de similar importancia y no reguladas, el conductor que tenga un vehículo saliendo por su lado derecho deberá ceder el paso." },
+            { id: "c6-q3", question: "¿Cuál es el orden de prioridad de paso en una intersección?", options: ["1. Autoridades, 2. Semáforos, 3. Señales de Alto/Ceda", "1. Vehículos sobre rieles, 2. Autoridades, 3. Vehículos de emergencia", "1. Peatones, 2. Ciclistas, 3. Vehículos", "1. Vías principales, 2. Avenidas, 3. Calles"], correctAnswer: 1, chapter: 6, explanation: "El orden es: 1. Rieles, 2. Autoridades, 3. Emergencia, 4. Semáforos, 5. Señales, 6. Vías principales." },
+            { id: "c6-q4", question: "¿Qué es el ángulo muerto o punto ciego?", options: ["Una zona donde no funcionan los frenos", "La zona que está detrás de ambos lados del conductor y que no se puede ver a través de los espejos laterales", "Una curva muy cerrada", "El momento en que el semáforo cambia a rojo"], correctAnswer: 1, chapter: 6, explanation: "El ángulo muerto es la zona que los espejos no logran cubrir y requiere girar la cabeza para verificar." },
+            { id: "c6-q5", question: "¿Qué es el 'efecto tijera' en vehículos de carga pesada?", options: ["Un tipo de adelantamiento rápido", "Cuando la carreta o remolque se desplaza lateralmente y golpea la cabina por un frenado indebido", "Una técnica para ahorrar combustible", "El cruce de dos camiones en una curva"], correctAnswer: 1, chapter: 6, explanation: "El efecto tijera ocurre cuando se bloquean las ruedas traseras del cabezal y el remolque continúa su impulso, pudiendo causar una volcadura." },
+            { id: "c6-q6", question: "En una intersección no regulada, si dos vehículos llegan en sentidos opuestos, ¿qué prioridad tiene el que va a girar a la izquierda?", options: ["Prioridad uno", "Prioridad dos", "Prioridad tres", "No tiene prioridad"], correctAnswer: 2, chapter: 6, explanation: "El giro a la derecha es prioridad 1, el movimiento directo es prioridad 2, y el giro a la izquierda es prioridad 3." },
+            { id: "c6-q7", question: "¿Dónde se ubican los puntos ciegos más peligrosos de un camión de carga pesada?", options: ["Solo atrás", "Inmediatamente al frente, a los lados de las puertas y directamente detrás", "Solo en el lado del pasajero", "Los camiones no tienen puntos ciegos por sus espejos grandes"], correctAnswer: 1, chapter: 6, explanation: "Los camiones tienen puntos ciegos al frente, a ambos lados (especialmente el derecho) y detrás, extendiéndose hasta 3 carriles de ancho." },
+            { id: "c6-q8", question: "En una rotonda de dos carriles, si usted va a tomar la tercera salida, ¿por cuál carril debe ingresar?", options: ["Carril externo (derecho)", "Carril interno (izquierdo)", "Cualquiera de los dos", "Por el espaldón"], correctAnswer: 1, chapter: 6, explanation: "Para abandonar la rotonda en la segunda salida o posteriores, se debe ubicar en el carril interno." },
+            { id: "c7-q1", question: "¿Cuál es la velocidad máxima permitida al aproximarse a una rotonda?", options: ["40 km/h", "30 km/h", "50 km/h", "20 km/h"], correctAnswer: 1, chapter: 7, explanation: "De acuerdo con la ley, al aproximarse a una rotonda se debe conducir a una velocidad máxima de 30 km/h." },
+            { id: "c7-q2", question: "¿Quién tiene la prioridad de paso en una rotonda?", options: ["El vehículo que va a entrar", "El vehículo que ya circula dentro de la rotonda", "El vehículo más grande", "El que va más rápido"], correctAnswer: 1, chapter: 7, explanation: "Tienen prioridad de paso los vehículos que circulan dentro de la rotonda." },
+            { id: "c7-q4", question: "¿Cuál es una ventaja de las rotondas?", options: ["Permiten ir a mayor velocidad", "Reducen el número y la gravedad de los accidentes al no permitir giros a la izquierda directos", "Son más baratas de construir", "No requieren señales"], correctAnswer: 1, chapter: 7, explanation: "Las rotondas reducen la gravedad de colisiones al obligar a moderar la velocidad y eliminar puntos de conflicto." },
+            { id: "c8-q1", question: "¿Cuál es el gas incoloro, inodoro e insípido capaz de producir la muerte?", options: ["Dióxido de carbono (CO2)", "Monóxido de carbono (CO)", "Óxido de nitrógeno (NO)", "Dióxido de azufre (SO2)"], correctAnswer: 1, chapter: 8, explanation: "El monóxido de carbono (CO) es un gas incoloro, inodoro e insípido capaz de producir la muerte." },
+            { id: "c8-q2", question: "¿Qué dispositivo del motor convierte los gases de escape en gases menos contaminantes?", options: ["El silenciador", "El catalizador", "El carburador", "El alternador"], correctAnswer: 1, chapter: 8, explanation: "El catalizador tiene la función de convertir los gases contaminantes del motor en menos contaminantes." },
+            { id: "c8-q4", question: "¿Qué tipo de contaminación es provocada por el alumbrado público y pantallas publicitarias?", options: ["Contaminación sónica", "Contaminación lumínica", "Contaminación calórica", "Contaminación electromagnética"], correctAnswer: 1, chapter: 8, explanation: "La contaminación lumínica es provocada por el exceso de luz artificial nocturna." },
+            { id: "c9-q1", question: "¿Qué porcentaje de ahorro de combustible se puede lograr con buenos hábitos de manejo?", options: ["5% a 10%", "10% a 30%", "50%", "80%"], correctAnswer: 1, chapter: 9, explanation: "Los buenos hábitos de manejo pueden disminuir el consumo de combustible de un 10% a un 30%." },
+            { id: "c9-q2", question: "¿Qué se recomienda hacer si el motor va a estar en marcha mínima sin movimiento por más de un minuto?", options: ["Acelerar un poco", "Apagar el motor", "Poner el aire acondicionado", "Poner luces de emergencia"], correctAnswer: 1, chapter: 9, explanation: "Se recomienda apagar el motor si se va a tardar más de un minuto en marcha mínima sin movimiento para ahorrar combustible." },
+            { id: "c9-q4", question: "¿Qué técnica de frenado es más eficiente para ahorrar combustible y cuidar los frenos?", options: ["Frenazos bruscos", "Frenar con el motor (compresión)", "Frenar solo con el freno de mano", "No frenar del todo"], correctAnswer: 1, chapter: 9, explanation: "Facilitar el frenado mediante la técnica de la compresión ayuda a la conducción eficiente." },
+            { id: "c10-q1", question: "¿Cuántos frenos tienen las motocicletas?", options: ["Uno solo", "Dos: uno para la rueda delantera y uno para la trasera", "Tres", "Cuatro"], correctAnswer: 1, chapter: 10, explanation: "Las motocicletas tienen dos frenos: uno para la rueda delantera y uno para la trasera." },
+            { id: "c10-q2", question: "¿Cuál es la mejor manera de circular en grupo en motocicleta para mantener seguridad y visibilidad?", options: ["En fila india (uno tras otro)", "En formación escalonada", "En parejas (uno al lado del otro)", "Cada uno por su cuenta"], correctAnswer: 1, chapter: 10, explanation: "La formación escalonada es la mejor manera de mantenerse unidos y conservar un margen de seguridad adecuado." }
+        ];
+
+        // --- COMPONENTS ---
+        const Icon = ({ name, className }) => {
+            useEffect(() => {
+                lucide.createIcons();
+            }, [name]);
+            return <i data-lucide={name} className={className}></i>;
+        };
+
+        function App() {
+            const [view, setView] = useState('dashboard');
+            const [selectedChapter, setSelectedChapter] = useState(null);
+            const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
+            const [sessionQuestions, setSessionQuestions] = useState([]);
+            const [answers, setAnswers] = useState({});
+            const [showExplanation, setShowExplanation] = useState(false);
+            const [progress, setProgress] = useState(() => {
+                const saved = localStorage.getItem('cr_driver_progress');
+                return saved ? JSON.parse(saved) : { xp: 0, completedQuestions: [], chapterProgress: {} };
+            });
+
+            useEffect(() => {
+                localStorage.setItem('cr_driver_progress', JSON.stringify(progress));
+            }, [progress]);
+
+            const startStudy = (chapterId) => {
+                let filtered = chapterId 
+                    ? questions.filter(q => q.chapter === chapterId)
+                    : [...questions].sort(() => Math.random() - 0.5).slice(0, 40);
+                
+                setSessionQuestions(filtered);
+                setSelectedChapter(chapterId);
+                setCurrentQuestionIndex(0);
+                setAnswers({});
+                setShowExplanation(false);
+                setView('study');
+            };
+
+            const handleAnswer = (optionIndex) => {
+                if (showExplanation) return;
+                const currentQ = sessionQuestions[currentQuestionIndex];
+                setAnswers(prev => ({ ...prev, [currentQ.id]: optionIndex }));
+                setShowExplanation(true);
+
+                if (optionIndex === currentQ.correctAnswer) {
+                    setProgress(prev => ({
+                        ...prev,
+                        xp: prev.xp + 10,
+                        completedQuestions: prev.completedQuestions.includes(currentQ.id) 
+                            ? prev.completedQuestions 
+                            : [...prev.completedQuestions, currentQ.id]
+                    }));
+                }
+            };
+
+            const nextQuestion = () => {
+                if (currentQuestionIndex < sessionQuestions.length - 1) {
+                    setCurrentQuestionIndex(prev => prev + 1);
+                    setShowExplanation(false);
+                } else {
+                    setView('results');
+                }
+            };
+
+            const calculateScore = () => {
+                let correct = 0;
+                sessionQuestions.forEach(q => {
+                    if (answers[q.id] === q.correctAnswer) correct++;
+                });
+                return {
+                    correct,
+                    total: sessionQuestions.length,
+                    percentage: Math.round((correct / sessionQuestions.length) * 100)
+                };
+            };
+
+            const probAprobar = Math.min(100, Math.round((progress.completedQuestions.length / questions.length) * 100));
+
+            return (
+                <div className="min-h-screen bg-slate-50 text-slate-900">
+                    <header className="bg-white border-b border-slate-200 sticky top-0 z-10">
+                        <div className="max-w-4xl mx-auto px-4 h-16 flex items-center justify-between">
+                            <div className="flex items-center gap-2 cursor-pointer" onClick={() => setView('dashboard')}>
+                                <div className="bg-emerald-600 p-1.5 rounded-lg">
+                                    <Icon name="graduation-cap" className="w-6 h-6 text-white" />
+                                </div>
+                                <h1 className="font-bold text-xl tracking-tight hidden sm:block text-emerald-800">Manual CR -Luis-</h1>
+                            </div>
+                            <div className="flex items-center gap-1.5 bg-slate-100 px-3 py-1.5 rounded-full">
+                                <Icon name="trophy" className="w-4 h-4 text-amber-500" />
+                                <span className="text-sm font-bold">{progress.xp} XP</span>
+                            </div>
+                        </div>
+                    </header>
+
+                    <main className="max-w-4xl mx-auto px-4 py-8">
+                        {view === 'dashboard' && (
+                            <div className="space-y-8 animate-in fade-in slide-in-from-bottom-4 duration-500">
+                                <section className="bg-emerald-600 rounded-3xl p-8 text-white shadow-xl shadow-emerald-200/50">
+                                    <h2 className="text-3xl font-bold mb-2">¡Hola, futuro conductor!</h2>
+                                    <p className="text-emerald-50 opacity-90 mb-6">Continúa tu camino hacia la licencia. Has completado {progress.completedQuestions.length} de {questions.length} preguntas.</p>
+                                    
+                                    <div className="bg-emerald-700/30 rounded-2xl p-4 mb-6 border border-emerald-400/20">
+                                        <div className="flex justify-between text-sm font-bold mb-2">
+                                            <span>Probabilidad de aprobar</span>
+                                            <span>{probAprobar}%</span>
+                                        </div>
+                                        <div className="h-2 bg-emerald-900/20 rounded-full overflow-hidden">
+                                            <div className="h-full bg-white transition-all duration-1000" style={{ width: `${probAprobar}%` }}></div>
+                                        </div>
+                                    </div>
+
+                                    <button onClick={() => startStudy(null)} className="bg-white text-emerald-700 px-6 py-3 rounded-xl font-bold hover:bg-emerald-50 transition-colors flex items-center gap-2 shadow-lg">
+                                        <Icon name="refresh-ccw" className="w-5 h-5" />
+                                        Simulacro de Examen (40 preguntas)
+                                    </button>
+                                </section>
+
+                                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                    {chapters.map((chapter) => {
+                                        const chapterQs = questions.filter(q => q.chapter === chapter.id);
+                                        const completedInChapter = chapterQs.filter(q => progress.completedQuestions.includes(q.id)).length;
+                                        const pct = Math.round((completedInChapter / chapterQs.length) * 100);
+
+                                        return (
+                                            <button key={chapter.id} onClick={() => startStudy(chapter.id)} className="bg-white p-6 rounded-2xl border border-slate-200 hover:border-emerald-500 hover:shadow-md transition-all text-left group">
+                                                <div className="flex justify-between items-start mb-4">
+                                                    <div className="bg-slate-100 p-2.5 rounded-xl group-hover:bg-emerald-100 group-hover:text-emerald-600 transition-colors text-slate-500">
+                                                        <Icon name="book-open" className="w-6 h-6" />
+                                                    </div>
+                                                    <span className="text-xs font-bold text-slate-400 uppercase tracking-wider">Capítulo {chapter.id}</span>
+                                                </div>
+                                                <h3 className="font-bold text-lg mb-1">{chapter.title}</h3>
+                                                <p className="text-sm text-slate-500 mb-4 line-clamp-2">{chapter.description}</p>
+                                                <div className="space-y-2">
+                                                    <div className="flex justify-between text-xs font-bold text-slate-400">
+                                                        <span>Progreso</span>
+                                                        <span>{pct}%</span>
+                                                    </div>
+                                                    <div className="h-1.5 bg-slate-100 rounded-full overflow-hidden">
+                                                        <div className="h-full bg-emerald-500 transition-all duration-500" style={{ width: `${pct}%` }}></div>
+                                                    </div>
+                                                </div>
+                                            </button>
+                                        );
+                                    })}
+                                </div>
+                            </div>
+                        )}
+
+                        {view === 'study' && (
+                            <div className="max-w-2xl mx-auto animate-in fade-in slide-in-from-right-4 duration-300">
+                                <div className="flex items-center justify-between mb-8">
+                                    <button onClick={() => setView('dashboard')} className="p-2 hover:bg-slate-100 rounded-full transition-colors">
+                                        <Icon name="arrow-left" className="w-6 h-6" />
+                                    </button>
+                                    <div className="flex-1 mx-4">
+                                        <div className="h-2 bg-slate-200 rounded-full overflow-hidden">
+                                            <div className="h-full bg-emerald-500 transition-all duration-300" style={{ width: `${((currentQuestionIndex + 1) / sessionQuestions.length) * 100}%` }}></div>
+                                        </div>
+                                    </div>
+                                    <span className="text-sm font-bold text-slate-400">{currentQuestionIndex + 1} / {sessionQuestions.length}</span>
+                                </div>
+
+                                <div className="bg-white rounded-3xl p-8 border border-slate-200 shadow-sm mb-6">
+                                    <h2 className="text-2xl font-bold mb-8 leading-tight">{sessionQuestions[currentQuestionIndex].question}</h2>
+                                    <div className="space-y-3">
+                                        {sessionQuestions[currentQuestionIndex].options.map((option, idx) => {
+                                            const isSelected = answers[sessionQuestions[currentQuestionIndex].id] === idx;
+                                            const isCorrect = sessionQuestions[currentQuestionIndex].correctAnswer === idx;
+                                            let stateClass = "border-slate-200 hover:border-emerald-500 hover:bg-emerald-50";
+                                            if (showExplanation) {
+                                                if (isCorrect) stateClass = "border-emerald-500 bg-emerald-50 text-emerald-700";
+                                                else if (isSelected) stateClass = "border-rose-500 bg-rose-50 text-rose-700";
+                                                else stateClass = "border-slate-100 opacity-50";
+                                            } else if (isSelected) stateClass = "border-emerald-500 bg-emerald-50";
+
+                                            return (
+                                                <button key={idx} onClick={() => handleAnswer(idx)} disabled={showExplanation} className={`w-full p-4 rounded-xl border-2 text-left transition-all flex items-center justify-between group ${stateClass}`}>
+                                                    <span className="font-medium">{option}</span>
+                                                    {showExplanation && isCorrect && <Icon name="check-circle-2" className="w-5 h-5 text-emerald-600" />}
+                                                    {showExplanation && isSelected && !isCorrect && <Icon name="x-circle" className="w-5 h-5 text-rose-600" />}
+                                                </button>
+                                            );
+                                        })}
+                                    </div>
+                                </div>
+
+                                {showExplanation && (
+                                    <div className="space-y-6 animate-in fade-in slide-in-from-top-2 duration-300">
+                                        <div className="bg-emerald-50 border border-emerald-100 rounded-2xl p-6">
+                                            <h4 className="font-bold text-emerald-800 mb-2 flex items-center gap-2">
+                                                <Icon name="book-open" className="w-4 h-4" />
+                                                Explicación
+                                            </h4>
+                                            <p className="text-emerald-700 text-sm leading-relaxed">{sessionQuestions[currentQuestionIndex].explanation}</p>
+                                        </div>
+                                        <button onClick={nextQuestion} className="w-full bg-slate-900 text-white py-4 rounded-2xl font-bold hover:bg-slate-800 transition-colors flex items-center justify-center gap-2">
+                                            Siguiente Pregunta
+                                            <Icon name="chevron-right" className="w-5 h-5" />
+                                        </button>
+                                    </div>
+                                )}
+                            </div>
+                        )}
+
+                        {view === 'results' && (
+                            <div className="max-w-md mx-auto text-center py-12 animate-in zoom-in duration-500">
+                                <div className="mb-8 inline-flex p-6 rounded-full bg-emerald-100 text-emerald-600">
+                                    <Icon name="trophy" className="w-16 h-16" />
+                                </div>
+                                <h2 className="text-4xl font-bold mb-2">¡Sesión terminada!</h2>
+                                <p className="text-slate-500 mb-8">Aquí tienes un resumen de tu desempeño.</p>
+                                <div className="bg-white rounded-3xl p-8 border border-slate-200 shadow-sm mb-8 grid grid-cols-2 gap-4">
+                                    <div className="text-center p-4 rounded-2xl bg-slate-50">
+                                        <div className="text-3xl font-black text-emerald-600">{calculateScore().percentage}%</div>
+                                        <div className="text-xs font-bold text-slate-400 uppercase tracking-widest mt-1">Puntaje</div>
+                                    </div>
+                                    <div className="text-center p-4 rounded-2xl bg-slate-50">
+                                        <div className="text-3xl font-black text-slate-900">{calculateScore().correct} / {calculateScore().total}</div>
+                                        <div className="text-xs font-bold text-slate-400 uppercase tracking-widest mt-1">Correctas</div>
+                                    </div>
+                                </div>
+                                <div className="space-y-3">
+                                    <button onClick={() => setView('dashboard')} className="w-full bg-emerald-600 text-white py-4 rounded-2xl font-bold hover:bg-emerald-700 transition-colors flex items-center justify-center gap-2">
+                                        <Icon name="layout-dashboard" className="w-5 h-5" />
+                                        Volver al Inicio
+                                    </button>
+                                    <button onClick={() => startStudy(selectedChapter)} className="w-full bg-slate-100 text-slate-600 py-4 rounded-2xl font-bold hover:bg-slate-200 transition-colors flex items-center justify-center gap-2">
+                                        <Icon name="refresh-ccw" className="w-5 h-5" />
+                                        Repetir Sesión
+                                    </button>
+                                </div>
+                            </div>
+                        )}
+                    </main>
+                </div>
+            );
+        }
+
+        const root = ReactDOM.createRoot(document.getElementById('root'));
+        root.render(<App />);
+    </script>
+</body>
+</html>
