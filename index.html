@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Manual del Conductor CR - Guía de Estudio - Luis A.</title>
+    <title>Manual del Conductor CR - Guía de Estudio</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
     <script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
@@ -165,6 +165,9 @@
             const [sessionQuestions, setSessionQuestions] = useState([]);
             const [answers, setAnswers] = useState({});
             const [showExplanation, setShowExplanation] = useState(false);
+            const [selectedOption, setSelectedOption] = useState(null);
+            const [isAnswered, setIsAnswered] = useState(false);
+            const [shuffledOptions, setShuffledOptions] = useState([]);
             const [progress, setProgress] = useState(() => {
                 return storage.get('cr_driver_progress', { xp: 0, completedQuestions: [], chapterProgress: {} });
             });
@@ -172,6 +175,17 @@
             useEffect(() => {
                 storage.set('cr_driver_progress', progress);
             }, [progress]);
+
+            // Shuffle options whenever the question changes
+            useEffect(() => {
+                const currentQ = sessionQuestions[currentQuestionIndex];
+                if (currentQ) {
+                    const shuffled = currentQ.options
+                        .map((opt, idx) => ({ text: opt, originalIndex: idx }))
+                        .sort(() => Math.random() - 0.5);
+                    setShuffledOptions(shuffled);
+                }
+            }, [currentQuestionIndex, sessionQuestions]);
 
             const startStudy = (chapterId) => {
                 try {
@@ -189,22 +203,32 @@
                     setCurrentQuestionIndex(0);
                     setAnswers({});
                     setShowExplanation(false);
+                    setSelectedOption(null);
+                    setIsAnswered(false);
                     setView('study');
                 } catch (e) {
                     console.error("Error starting session", e);
                 }
             };
 
-            const handleAnswer = (optionIndex) => {
-                if (showExplanation) return;
+            const handleSelectOption = (idx) => {
+                if (isAnswered) return;
+                setSelectedOption(idx);
+            };
+
+            const confirmAnswer = () => {
+                if (selectedOption === null || isAnswered) return;
+                
                 try {
                     const currentQ = sessionQuestions[currentQuestionIndex];
                     if (!currentQ) return;
 
-                    setAnswers(prev => ({ ...prev, [currentQ.id]: optionIndex }));
+                    const originalIndex = shuffledOptions[selectedOption].originalIndex;
+                    setAnswers(prev => ({ ...prev, [currentQ.id]: originalIndex }));
+                    setIsAnswered(true);
                     setShowExplanation(true);
 
-                    if (optionIndex === currentQ.correctAnswer) {
+                    if (originalIndex === currentQ.correctAnswer) {
                         setProgress(prev => {
                             const completed = prev.completedQuestions || [];
                             return {
@@ -217,7 +241,7 @@
                         });
                     }
                 } catch (e) {
-                    console.error("Error handling answer", e);
+                    console.error("Error confirming answer", e);
                 }
             };
 
@@ -225,6 +249,8 @@
                 try {
                     if (currentQuestionIndex < sessionQuestions.length - 1) {
                         setShowExplanation(false);
+                        setSelectedOption(null);
+                        setIsAnswered(false);
                         setCurrentQuestionIndex(prev => prev + 1);
                     } else {
                         setView('results');
@@ -355,27 +381,54 @@
                                 </div>
 
                                 <div className="bg-white rounded-3xl p-8 border border-slate-200 shadow-sm mb-6">
-                                    <h2 className="text-2xl font-bold mb-8 leading-tight">{sessionQuestions[currentQuestionIndex].question}</h2>
+                                    <h2 className="text-2xl font-bold mb-8 leading-tight">{currentQ.question}</h2>
                                     <div className="space-y-3">
-                                        {sessionQuestions[currentQuestionIndex].options.map((option, idx) => {
-                                            const isSelected = answers[sessionQuestions[currentQuestionIndex].id] === idx;
-                                            const isCorrect = sessionQuestions[currentQuestionIndex].correctAnswer === idx;
+                                        {shuffledOptions.map((option, idx) => {
+                                            const isSelected = selectedOption === idx;
+                                            const isCorrect = option.originalIndex === currentQ.correctAnswer;
+                                            const wasSelectedAndWrong = isAnswered && isSelected && !isCorrect;
+                                            
                                             let stateClass = "border-slate-200 hover:border-emerald-500 hover:bg-emerald-50";
-                                            if (showExplanation) {
+                                            
+                                            if (isAnswered) {
                                                 if (isCorrect) stateClass = "border-emerald-500 bg-emerald-50 text-emerald-700";
                                                 else if (isSelected) stateClass = "border-rose-500 bg-rose-50 text-rose-700";
                                                 else stateClass = "border-slate-100 opacity-50";
-                                            } else if (isSelected) stateClass = "border-emerald-500 bg-emerald-50";
+                                            } else if (isSelected) {
+                                                stateClass = "border-emerald-600 bg-emerald-50 ring-2 ring-emerald-600 ring-offset-2";
+                                            }
 
                                             return (
-                                                <button key={idx} onClick={() => handleAnswer(idx)} disabled={showExplanation} className={`w-full p-4 rounded-xl border-2 text-left transition-all flex items-center justify-between group ${stateClass}`}>
-                                                    <span className="font-medium">{option}</span>
-                                                    {showExplanation && isCorrect && <Icon name="check-circle-2" className="w-5 h-5 text-emerald-600" />}
-                                                    {showExplanation && isSelected && !isCorrect && <Icon name="x-circle" className="w-5 h-5 text-rose-600" />}
+                                                <button 
+                                                    key={idx} 
+                                                    onClick={() => handleSelectOption(idx)} 
+                                                    disabled={isAnswered} 
+                                                    className={`w-full p-4 rounded-xl border-2 text-left transition-all flex items-center justify-between group ${stateClass}`}
+                                                >
+                                                    <span className="font-medium">{option.text}</span>
+                                                    {isAnswered && isCorrect && <Icon name="check-circle-2" className="w-5 h-5 text-emerald-600" />}
+                                                    {wasSelectedAndWrong && <Icon name="x-circle" className="w-5 h-5 text-rose-600" />}
                                                 </button>
                                             );
                                         })}
                                     </div>
+
+                                    {!isAnswered && (
+                                        <div className="mt-8">
+                                            <button 
+                                                onClick={confirmAnswer}
+                                                disabled={selectedOption === null}
+                                                className={`w-full py-4 rounded-2xl font-bold transition-all flex items-center justify-center gap-2 ${
+                                                    selectedOption === null 
+                                                    ? "bg-slate-100 text-slate-400 cursor-not-allowed" 
+                                                    : "bg-emerald-600 text-white hover:bg-emerald-700 shadow-lg shadow-emerald-200"
+                                                }`}
+                                            >
+                                                Confirmar Respuesta
+                                                <Icon name="check" className="w-5 h-5" />
+                                            </button>
+                                        </div>
+                                    )}
                                 </div>
 
                                 {showExplanation && (
