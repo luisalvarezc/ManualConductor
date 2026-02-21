@@ -78,16 +78,200 @@
 
         // --- DATA ---
         const chapters = [
-            { id: 1, title: "Aspectos generales del tránsito", description: "Historia, conceptos básicos y la trilogía vial." },
-            { id: 2, title: "Legislación de tránsito", description: "Leyes, sanciones, licencias y puntos." },
-            { id: 3, title: "Factor vía y su entorno", description: "Tipos de vías, infraestructura y señalamiento." },
-            { id: 4, title: "Factor vehículo", description: "Sistemas del vehículo, mantenimiento y seguridad." },
-            { id: 5, title: "Factor humano", description: "Condiciones físicas, mentales y conducción segura." },
-            { id: 6, title: "Normas de circulación", description: "Prioridades de paso, giros y adelantamientos." },
-            { id: 7, title: "Rotondas", description: "Reglas específicas para circular en rotondas." },
-            { id: 8, title: "Conductor y contaminación", description: "Impacto ambiental y normativa vigente." },
-            { id: 9, title: "Conducción eficiente", description: "Ahorro de combustible y técnicas de eco-conducción." },
-            { id: 10, title: "Conducción de motocicleta", description: "Reglas específicas para motociclistas." },
+            { 
+                id: 1, 
+                title: "Aspectos generales del tránsito", 
+                description: "Historia, conceptos básicos y la trilogía vial.",
+                summary: [
+                    "El primer vehículo circuló en San José en 1912.",
+                    "El primer Código de la Circulación se publicó en 1920.",
+                    "La Trilogía Vial se compone de: Factor Humano, Factor Vehicular y Factor Vía.",
+                    "El objetivo primordial de la seguridad vial es prevenir accidentes de tránsito.",
+                    "Transporte: Acción de trasladar personas o cosas de un lugar a otro."
+                ],
+                reviewQuestions: [
+                    { 
+                        question: "¿Qué se entiende por 'Trilogía Vial' y cuáles son sus componentes?", 
+                        answer: "Es el sistema integrado que conforma el fenómeno del tránsito. Compuesta por: el ser humano, el vehículo y la vía junto con su entorno." 
+                    },
+                    { 
+                        question: "¿Cuál es la diferencia conceptual entre 'tránsito' y 'transporte'?", 
+                        answer: "El tránsito es el concepto más amplio y se define como la acción de desplazarse de un lugar a otro, mientras que el transporte es la acción específica de trasladar a una persona o cosa de un lugar a otro." 
+                    },
+                    { 
+                        question: "¿Cuál es el objetivo primordial de la seguridad vial según el manual?", 
+                        answer: "Prevenir accidentes de tránsito mediante mecanismos que garanticen el buen funcionamiento de la circulación." 
+                    }
+                ],
+                glossary: [
+                    { term: "Tránsito", definition: "Acción de desplazarse de un lugar a otro." },
+                    { term: "Transporte", definition: "Acción de trasladar personas o cosas de un lugar a otro (concepto de servicio)." },
+                    { term: "Seguridad Vial", definition: "Disciplina que estudia y aplica acciones y mecanismos para garantizar el buen funcionamiento de la circulación." }
+                ],
+                essayTopics: [
+                    "El Factor Humano como Eje Central de la Seguridad Vial: Analice por qué el conductor es el elemento más importante."
+                ]
+            },
+            { 
+                id: 2, 
+                title: "Legislación de tránsito", 
+                description: "Leyes, sanciones, licencias y puntos.",
+                summary: [
+                    "Ley vigente: Ley de Tránsito por Vías Públicas Terrestres y Seguridad Vial #9078.",
+                    "Distribución de multas: 69% se destina al COSEVI.",
+                    "Conductores novatos: Suspensión por 1 año al acumular 6 puntos.",
+                    "Vigencia de licencia: 6 años (0-4 puntos), 4 años (5-8 puntos), 3 años (9-11 puntos).",
+                    "Licencia A-1: Edad mínima 16 años con autorización."
+                ],
+                reviewQuestions: [
+                    { 
+                        question: "¿Cómo se determina y actualiza el monto de las multas de tránsito?", 
+                        answer: "Anualmente usando el IPC interanual del INEC. La variación no puede superar el 14%." 
+                    },
+                    { 
+                        question: "¿Cuáles son los requisitos básicos para obtener un permiso temporal de aprendizaje?", 
+                        answer: "Saber leer/escribir, curso aprobado, >18 años, dictamen médico, póliza de responsabilidad y registro limpio de delitos recientes." 
+                    }
+                ],
+                glossary: [
+                    { term: "Infracción", definition: "Incumplimiento de una o más normas legales establecidas en la Ley de Tránsito." },
+                    { term: "Derecho a Circular", definition: "Libertad constitucional de movimiento regulada por normas para el bien común." }
+                ],
+                essayTopics: [
+                    "Legislación y Convivencia Social: Cómo el cumplimiento de la Ley 9078 promueve una mejor calidad de vida.",
+                    "El Sistema de Puntos y la Profesionalización del Conductor: Efectividad como mecanismo de control."
+                ]
+            },
+            { 
+                id: 3, 
+                title: "Factor vía y su entorno", 
+                description: "Tipos de vías, infraestructura y señalamiento.",
+                summary: [
+                    "Vía urbana: Acera, calzada, caño y borde de acera.",
+                    "Línea amarilla continua: Prohíbe el adelantamiento.",
+                    "Señales naranja: Indican prevención por obras en la vía.",
+                    "Señales verdes: Información de destino y distancia.",
+                    "Peralte: Inclinación transversal en curvas para contrarrestar fuerza centrífuga."
+                ],
+                reviewQuestions: [
+                    { 
+                        question: "¿Cómo se clasifican las señales de tránsito verticales?", 
+                        answer: "Reglamentación (obligaciones), Prevención (peligros) e Información (orientación)." 
+                    },
+                    { 
+                        question: "¿Qué componentes estructurales distinguen a una vía urbana de una vía rural?", 
+                        answer: "Urbana: acera, calzada, caño y borde. Rural: calzada, espaldón y cuneta." 
+                    },
+                    { 
+                        question: "¿Cuáles son las funciones principales de la vía pública?", 
+                        answer: "Circulación (traslado), Convivencia (relación social) y Ecológicas (interrelación con medio ambiente)." 
+                    }
+                ],
+                glossary: [
+                    { term: "Acera", definition: "Parte de la vía destinada exclusivamente a peatones en zonas urbanas." },
+                    { term: "Calzada", definition: "Superficie de la vía sobre la cual transitan los vehículos." },
+                    { term: "Caño", definition: "Elemento urbano para evacuar aguas pluviales." },
+                    { term: "Cuneta", definition: "Zanja en vías rurales para recoger y evacuar aguas superficiales." },
+                    { term: "Espaldón", definition: "Sección contigua a la calzada rural para soporte, emergencias y estacionamiento eventual." },
+                    { term: "Intersección", definition: "Lugar donde convergen dos o más vías." }
+                ],
+                essayTopics: [
+                    "Estructura y Función de la Infraestructura Vial: Comparativa entre diseño urbano y rural."
+                ]
+            },
+            { 
+                id: 4, 
+                title: "Factor vehículo", 
+                description: "Sistemas del vehículo, mantenimiento y seguridad.",
+                summary: [
+                    "Sistema de lubricación: Evita el roce entre piezas del motor.",
+                    "Embrague: Separa la transmisión del motor para cambios de marcha.",
+                    "Llantas: Grosor mínimo legal del testigo de desgaste es 1,6 mm.",
+                    "Extintor: Ubicación ideal debajo del asiento del acompañante.",
+                    "Alternador: Genera corriente y recarga la batería."
+                ],
+                essayTopics: [
+                    "La Importancia del Mantenimiento Vehicular: Relación entre requisitos técnicos y prevención de fallas."
+                ]
+            },
+            { 
+                id: 5, 
+                title: "Factor humano", 
+                description: "Condiciones físicas, mentales y conducción segura.",
+                summary: [
+                    "Tiempo de reacción promedio: 1,5 segundos.",
+                    "Manejo a la defensiva: Esperar todo, imaginar todo y suponer todo.",
+                    "Alcohol: Produce desinhibición y falsa confianza en la primera etapa.",
+                    "Luces obligatorias: De 6:00 p.m. a 6:00 a.m.",
+                    "Fatiga: Causa pérdida de concentración y reflejos lentos."
+                ]
+            },
+            { 
+                id: 6, 
+                title: "Normas de circulación", 
+                description: "Prioridades de paso, giros y adelantamientos.",
+                summary: [
+                    "Regla de seguimiento (livianos): Dos segundos de distancia.",
+                    "Ley de la mano derecha: Prioridad al vehículo que sale por la derecha en cruces no regulados.",
+                    "Prioridad en intersección: 1. Rieles, 2. Autoridades, 3. Emergencia, 4. Semáforos.",
+                    "Punto ciego: Zona no visible por espejos que requiere girar la cabeza.",
+                    "Efecto tijera: Bloqueo de ruedas traseras en cabezales de carga pesada."
+                ],
+                reviewQuestions: [
+                    { 
+                        question: "En ausencia de señalización, ¿cuáles son los límites de velocidad establecidos?", 
+                        answer: "Autopistas: min 50 km/h. Urbano: 60 km/h. Zonas escolares: 25 km/h." 
+                    },
+                    { 
+                        question: "¿Qué establece la ley sobre el uso de la luz alta y la luz baja?", 
+                        answer: "Luz alta: vías públicas sin vehículos cerca. Luz baja: al seguir a otro, en encuentros o ciudad." 
+                    }
+                ]
+            },
+            { 
+                id: 7, 
+                title: "Rotondas", 
+                description: "Reglas específicas para circular en rotondas.",
+                summary: [
+                    "Velocidad máxima de aproximación: 30 km/h.",
+                    "Prioridad: Vehículos que ya circulan dentro de la rotonda.",
+                    "Carriles: Interno para salidas 2, 3 o 4; Externo para salidas 1 o 2.",
+                    "Ventaja: Reducción de gravedad de accidentes y fluidez constante."
+                ]
+            },
+            { 
+                id: 8, 
+                title: "Conductor y contaminación", 
+                description: "Impacto ambiental y normativa vigente.",
+                summary: [
+                    "Monóxido de carbono (CO): Gas incoloro e inodoro altamente tóxico.",
+                    "Catalizador: Convierte gases tóxicos en menos contaminantes.",
+                    "Contaminación lumínica: Exceso de luz artificial nocturna.",
+                    "Contaminación sónica: Ruido excesivo que afecta la salud."
+                ]
+            },
+            { 
+                id: 9, 
+                title: "Conducción eficiente", 
+                description: "Ahorro de combustible y técnicas de eco-conducción.",
+                summary: [
+                    "Ahorro potencial: Entre 10% y 30% con buenos hábitos.",
+                    "Marcha mínima: Apagar el motor si la espera supera un minuto.",
+                    "Compresión: Usar el motor para frenar ahorra combustible y frenos.",
+                    "Mantenimiento: Un motor bien afinado contamina menos y gasta menos."
+                ]
+            },
+            { 
+                id: 10, 
+                title: "Conducción de motocicleta", 
+                description: "Reglas específicas para motociclistas.",
+                summary: [
+                    "Frenos: Poseen dos independientes (delantero y trasero).",
+                    "Formación en grupo: Se recomienda la formación escalonada.",
+                    "Casco: Debe estar certificado y bien ajustado.",
+                    "Visibilidad: Uso de prendas reflectantes y luces encendidas siempre."
+                ]
+            },
         ];
 
         const questions = [
@@ -161,6 +345,7 @@
         function App() {
             const [view, setView] = useState('dashboard');
             const [selectedChapter, setSelectedChapter] = useState(null);
+            const [libraryChapter, setLibraryChapter] = useState(null);
             const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
             const [sessionQuestions, setSessionQuestions] = useState([]);
             const [answers, setAnswers] = useState({});
@@ -328,10 +513,16 @@
                                         </div>
                                     </div>
 
-                                    <button onClick={() => startStudy(null)} className="bg-white text-emerald-700 px-6 py-3 rounded-xl font-bold hover:bg-emerald-50 transition-colors flex items-center gap-2 shadow-lg">
-                                        <Icon name="refresh-ccw" className="w-5 h-5" />
-                                        Simulacro de Examen (40 preguntas)
-                                    </button>
+                                    <div className="flex flex-wrap gap-4">
+                                        <button onClick={() => startStudy(null)} className="bg-white text-emerald-700 px-6 py-3 rounded-xl font-bold hover:bg-emerald-50 transition-colors flex items-center gap-2 shadow-lg">
+                                            <Icon name="refresh-ccw" className="w-5 h-5" />
+                                            Simulacro de Examen (40 preguntas)
+                                        </button>
+                                        <button onClick={() => setView('library')} className="bg-emerald-500 text-white px-6 py-3 rounded-xl font-bold hover:bg-emerald-400 transition-colors flex items-center gap-2 shadow-lg">
+                                            <Icon name="library" className="w-5 h-5" />
+                                            Biblioteca de Estudio
+                                        </button>
+                                    </div>
                                 </section>
 
                                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -444,6 +635,143 @@
                                             Siguiente Pregunta
                                             <Icon name="chevron-right" className="w-5 h-5" />
                                         </button>
+                                    </div>
+                                )}
+                            </div>
+                        )}
+
+                        {view === 'library' && (
+                            <div className="space-y-6 animate-in">
+                                <div className="flex items-center gap-4 mb-8">
+                                    <button 
+                                        onClick={() => {
+                                            if (libraryChapter) setLibraryChapter(null);
+                                            else setView('dashboard');
+                                        }}
+                                        className="p-2 hover:bg-slate-100 rounded-full transition-colors"
+                                    >
+                                        <Icon name="arrow-left" className="w-6 h-6" />
+                                    </button>
+                                    <h2 className="text-3xl font-bold">Biblioteca de Estudio</h2>
+                                </div>
+
+                                {!libraryChapter ? (
+                                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                        {chapters.map((chapter) => (
+                                            <button 
+                                                key={chapter.id}
+                                                onClick={() => setLibraryChapter(chapter.id)}
+                                                className="bg-white p-6 rounded-2xl border border-slate-200 hover:border-emerald-500 hover:shadow-md transition-all text-left"
+                                            >
+                                                <div className="flex items-center gap-3 mb-2">
+                                                    <div className="bg-emerald-100 text-emerald-600 p-2 rounded-lg">
+                                                        <Icon name="book-open" className="w-5 h-5" />
+                                                    </div>
+                                                    <span className="text-xs font-bold text-slate-400 uppercase tracking-wider">Capítulo {chapter.id}</span>
+                                                </div>
+                                                <h3 className="font-bold text-lg">{chapter.title}</h3>
+                                                <p className="text-sm text-slate-500 mt-1">{chapter.description}</p>
+                                            </button>
+                                        ))}
+                                    </div>
+                                ) : (
+                                    <div className="bg-white rounded-3xl p-8 border border-slate-200 shadow-sm">
+                                        {(() => {
+                                            const chapter = chapters.find(c => c.id === libraryChapter);
+                                            if (!chapter) return null;
+                                            return (
+                                                <div className="space-y-8">
+                                                    <div>
+                                                        <span className="text-xs font-bold text-emerald-600 uppercase tracking-widest">Capítulo {chapter.id}</span>
+                                                        <h3 className="text-3xl font-bold mt-2">{chapter.title}</h3>
+                                                        <p className="text-slate-500 mt-2">{chapter.description}</p>
+                                                    </div>
+
+                                                    <div className="space-y-4">
+                                                        <h4 className="font-bold text-lg flex items-center gap-2">
+                                                            <Icon name="check-circle-2" className="w-5 h-5 text-emerald-600" />
+                                                            Puntos Clave
+                                                        </h4>
+                                                        <ul className="space-y-3">
+                                                            {chapter.summary?.map((point, i) => (
+                                                                <li key={i} className="flex items-start gap-3 bg-slate-50 p-4 rounded-xl border border-slate-100">
+                                                                    <div className="w-1.5 h-1.5 bg-emerald-500 rounded-full mt-2 shrink-0" />
+                                                                    <span className="text-slate-700 leading-relaxed">{point}</span>
+                                                                </li>
+                                                            ))}
+                                                        </ul>
+                                                    </div>
+
+                                                    {chapter.glossary && chapter.glossary.length > 0 && (
+                                                        <div className="space-y-4">
+                                                            <h4 className="font-bold text-lg flex items-center gap-2">
+                                                                <Icon name="languages" className="w-5 h-5 text-emerald-600" />
+                                                                Glosario
+                                                            </h4>
+                                                            <div className="grid grid-cols-1 gap-3">
+                                                                {chapter.glossary.map((item, i) => (
+                                                                    <div key={i} className="bg-slate-50 p-4 rounded-xl border border-slate-100">
+                                                                        <span className="font-bold text-emerald-700">{item.term}: </span>
+                                                                        <span className="text-slate-600">{item.definition}</span>
+                                                                    </div>
+                                                                ))}
+                                                            </div>
+                                                        </div>
+                                                    )}
+
+                                                    {chapter.reviewQuestions && chapter.reviewQuestions.length > 0 && (
+                                                        <div className="space-y-4">
+                                                            <h4 className="font-bold text-lg flex items-center gap-2">
+                                                                <Icon name="help-circle" className="w-5 h-5 text-emerald-600" />
+                                                                Cuestionario de Repaso
+                                                            </h4>
+                                                            <div className="space-y-3">
+                                                                {chapter.reviewQuestions.map((item, i) => (
+                                                                    <div key={i} className="bg-white p-5 rounded-xl border border-slate-200 shadow-sm">
+                                                                        <p className="font-bold text-slate-800 mb-2">Q: {item.question}</p>
+                                                                        <p className="text-emerald-700 text-sm bg-emerald-50 p-3 rounded-lg border border-emerald-100">
+                                                                            <span className="font-bold">R:</span> {item.answer}
+                                                                        </p>
+                                                                    </div>
+                                                                ))}
+                                                            </div>
+                                                        </div>
+                                                    )}
+
+                                                    {chapter.essayTopics && chapter.essayTopics.length > 0 && (
+                                                        <div className="space-y-4">
+                                                            <h4 className="font-bold text-lg flex items-center gap-2">
+                                                                <Icon name="pen-tool" className="w-5 h-5 text-emerald-600" />
+                                                                Temas de Ensayo
+                                                            </h4>
+                                                            <div className="space-y-3">
+                                                                {chapter.essayTopics.map((topic, i) => (
+                                                                    <div key={i} className="bg-amber-50 p-4 rounded-xl border border-amber-100 text-amber-900 italic text-sm">
+                                                                        {topic}
+                                                                    </div>
+                                                                ))}
+                                                            </div>
+                                                        </div>
+                                                    )}
+
+                                                    <div className="pt-6 border-t border-slate-100 flex flex-col sm:flex-row gap-4">
+                                                        <button 
+                                                            onClick={() => startStudy(chapter.id)}
+                                                            className="bg-emerald-600 text-white px-8 py-4 rounded-2xl font-bold hover:bg-emerald-700 transition-colors flex items-center justify-center gap-2 flex-1"
+                                                        >
+                                                            <Icon name="graduation-cap" className="w-5 h-5" />
+                                                            Practicar Preguntas
+                                                        </button>
+                                                        <button 
+                                                            onClick={() => setLibraryChapter(null)}
+                                                            className="bg-slate-100 text-slate-600 px-8 py-4 rounded-2xl font-bold hover:bg-slate-200 transition-colors flex-1"
+                                                        >
+                                                            Ver otros capítulos
+                                                        </button>
+                                                    </div>
+                                                </div>
+                                            );
+                                        })()}
                                     </div>
                                 )}
                             </div>
